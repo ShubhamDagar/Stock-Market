@@ -27,7 +27,7 @@ const Wrapper = styled.div`
     width: 410px;
   }
 `;
-function SignIn() {
+function SignUp() {
   const history = useHistory();
   const userContext = useContext(UserContext);
   const [validateEmail, setValidateEmail] = useState({
@@ -63,13 +63,13 @@ function SignIn() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (!event.target[0].value.match(mail)) {
+    if (!event.target[1].value.match(mail)) {
       setValidateEmail((prev) => {
         return { ...prev, flag: true };
       });
       return;
     }
-    if (!event.target[1].value.match(passw)) {
+    if (!event.target[2].value.match(passw)) {
       setValidatePass((prev) => {
         return { ...prev, flag: true };
       });
@@ -77,12 +77,29 @@ function SignIn() {
     }
     let form = new FormData(event.target);
     let data = Object.fromEntries(form);
-    axios.post('/api/users/login', data).then((res) => { userContext.setUser(res.data); history.push('stocks') }, error => { console.log(error) });
+    axios.post("/api/users/signup", data).then(
+      (res) => {
+        userContext.setUser(res.data);
+        history.push("stocks");
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   };
   return (
     <Wrapper>
       <div id="Background" className="p-5">
         <Form className="p-5 rounded shadow-lg" onSubmit={handleSubmit}>
+          <Form.Group>
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="name"
+              placeholder="Enter Full Name"
+              required
+            />
+          </Form.Group>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -125,14 +142,15 @@ function SignIn() {
             )}
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
-            <Form.Check style={{fontSize: "14px"}}
+            <Form.Check
+              style={{ fontSize: "14px" }}
               type="checkbox"
               label="Agree to all policies."
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Sign In
+          <Button variant="success" type="submit">
+            Register
           </Button>
         </Form>
       </div>
@@ -140,4 +158,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default SignUp;
