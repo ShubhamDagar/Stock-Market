@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
@@ -25,30 +25,51 @@ const Wrapper = styled.div`
     width: 410px;
   }
 `;
-function SignIn(props) {
+function SignIn() {
   const history = useHistory();
-  const [validateEmail, setValidateEmail] = useState(false);
-  const [validatePass, setValidatePass] = useState(false);
+  const [validateEmail, setValidateEmail] = useState({
+    flag: false,
+    check: false,
+  });
+  const [validatePass, setValidatePass] = useState({
+    flag: false,
+    check: false,
+  });
+  let mail =
+    /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+  let passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
   const handlePass = (event) => {
-    let passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
-    if (event.target.value.match(passw)) setValidatePass(false);
+    if (event.target.value.match(passw))
+      setValidatePass((prev) => {
+        return { flag: false, check: true };
+      });
+    else
+      setValidatePass((prev) => {
+        return { ...prev, check: false };
+      });
   };
   const handleMail = (event) => {
-    let mail =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
-    if (event.target.value.match(mail)) setValidateEmail(false);
+    if (event.target.value.match(mail))
+      setValidateEmail((prev) => {
+        return { flag: false, check: true };
+      });
+    else
+      setValidateEmail((prev) => {
+        return { ...prev, check: false };
+      });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    let passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
-    let mail =
-      /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
     if (!event.target[0].value.match(mail)) {
-      setValidateEmail(true);
+      setValidateEmail((prev) => {
+        return { ...prev, flag: true };
+      });
       return;
     }
     if (!event.target[1].value.match(passw)) {
-      setValidatePass(true);
+      setValidatePass((prev) => {
+        return { ...prev, flag: true };
+      });
       return;
     }
     history.push("stocks");
@@ -56,21 +77,22 @@ function SignIn(props) {
   return (
     <Wrapper>
       <div id="Background" className="p-5">
-        <Form className="p-5 rounded" onSubmit={handleSubmit}>
+        <Form className="p-5 rounded shadow-lg" onSubmit={handleSubmit}>
           <Form.Group controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter email"
               onChange={handleMail}
-              isInvalid={validateEmail}
+              isInvalid={validateEmail.flag}
+              isValid={validateEmail.check}
             />
-            {validateEmail ? (
+            {validateEmail.flag ? (
               <Form.Control.Feedback type="invalid">
                 Please enter a proper email!
               </Form.Control.Feedback>
             ) : (
-              <Form.Text className="text-muted">
+              <Form.Text style={{ color: "#ce2a7e" }}>
                 We'll never share your email with anyone else.
               </Form.Text>
             )}
@@ -81,21 +103,22 @@ function SignIn(props) {
             <Form.Control
               type="password"
               placeholder="Password"
-              isInvalid={validatePass}
+              isInvalid={validatePass.flag}
+              isValid={validatePass.check}
               onChange={handlePass}
             />
-            {validatePass ? (
+            {validatePass.flag ? (
               <Form.Control.Feedback type="invalid">
                 Must contain atleast 1 digit and 1 special character!
               </Form.Control.Feedback>
             ) : (
-              <Form.Text className="text-muted">
+              <Form.Text style={{ color: "#ce2a7e" }}>
                 Choose a strong password :)
               </Form.Text>
             )}
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
-            <Form.Check
+            <Form.Check style={{fontSize: "14px"}}
               type="checkbox"
               label="Agree to all policies."
               required
