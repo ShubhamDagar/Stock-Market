@@ -17,7 +17,7 @@ const userRoutes = require('./routes/users');
 
 
 
-mongoose.connect('mongodb://localhost:27017/stock', {
+mongoose.connect('mongodb+srv://jaivin:dtdljaivin@stockswebapp.qqmth.mongodb.net/stocksdb?retryWrites=true&w=majority', {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
