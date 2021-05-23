@@ -6,7 +6,7 @@ import mongoose from 'mongoose'
 //getUsers function to get all users
 export const getUsers = asyncHandler(async(req, res) => {
     const users = await User.find({})
-    res.json({users: users , session: req.session})
+    res.json({ users: users });
 })
 
 //getUserById function to retrieve user by id

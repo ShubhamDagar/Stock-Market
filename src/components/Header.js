@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { Navbar, NavLink, Button } from "react-bootstrap";
+import { Navbar, NavLink } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
 import { UserContext } from "../App";
@@ -32,6 +32,7 @@ const Wrapper = styled.div`
   }
   position: sticky;
   top: 0;
+  z-index: 10;
 `;
 function Header() {
   const userContext = useContext(UserContext);
@@ -40,7 +41,7 @@ function Header() {
       (res) => userContext.setUser(res.data),
       (error) => console.log(error)
     );
-  }, []);
+  });
   const logOut = (event) => {
     event.preventDefault();
     axios.get("api/users/logout").then(
@@ -58,7 +59,7 @@ function Header() {
         />
         {/* <img width="150px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/T-SYSTEMS-LOGO2013.svg/1280px-T-SYSTEMS-LOGO2013.svg.png" /> */}
         {userContext.user ? (
-          <Button onClick={logOut}>LogOut {userContext.user.name}</Button>
+          <NavLink onClick={logOut}>LogOut {userContext.user.name}</NavLink>
         ) : (
           <div style={{display:"flex"}}>
             <NavLink href="/SignIn">Sign In</NavLink>
