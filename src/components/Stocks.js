@@ -53,9 +53,9 @@ function Stocks() {
               .slice(0, 100)
               .sort((a, b) => a.T.localeCompare(b.T))
           );
-          setTimeout(() => {
-            document.getElementById("0").remove();
-          }, 500);
+          // setTimeout(() => {
+          //   document.getElementById("0").remove();
+          // }, 2000);
         },
         (err) => {
           console.log(err);
@@ -109,7 +109,7 @@ function Stocks() {
         <Form.Control
           type="date"
           name="date"
-          value={maxDate}
+          defaultValue={maxDate}
           max={maxDate}
           onChange={handleChange}
           className="m-2 drop-glow"
