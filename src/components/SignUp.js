@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState} from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
-import axios from "axios";
-import { UserContext } from "../App";
+import axios from "axios"
+import { connect } from 'react-redux'
+import { logIn } from '../redux/user/userActions';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -27,9 +28,8 @@ const Wrapper = styled.div`
     width: 410px;
   }
 `;
-function SignUp() {
+function SignUp(props) {
   const history = useHistory();
-  const userContext = useContext(UserContext);
   const [validateEmail, setValidateEmail] = useState({
     flag: false,
     check: false,
@@ -79,7 +79,7 @@ function SignUp() {
     let data = Object.fromEntries(form);
     axios.post("/api/users/signup", data).then(
       (res) => {
-        userContext.setUser(res.data);
+        props.logIn(res.data);
         history.push("stocks");
       },
       (error) => {
@@ -157,5 +157,12 @@ function SignUp() {
     </Wrapper>
   );
 }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logIn: (user) => {
+      dispatch(logIn(user));
+    }
+  };
+};
 
-export default SignUp;
+export default connect(null,mapDispatchToProps)(SignUp);

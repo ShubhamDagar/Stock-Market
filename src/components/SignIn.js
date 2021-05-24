@@ -1,9 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState} from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
-import { UserContext } from "../App";
+import { connect } from "react-redux";
+import { logIn} from "../redux/user/userActions";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -27,9 +28,9 @@ const Wrapper = styled.div`
     width: 410px;
   }
 `;
-function SignIn() {
+function SignIn(props) {
   const history = useHistory();
-  const userContext = useContext(UserContext);
+  const [disable, setDisable] = useState(false);
   const [validateEmail, setValidateEmail] = useState({
     flag: false,
     check: false,
@@ -63,6 +64,7 @@ function SignIn() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    setDisable(true);
     if (!event.target[0].value.match(mail)) {
       setValidateEmail((prev) => {
         return { ...prev, flag: true };
@@ -77,7 +79,16 @@ function SignIn() {
     }
     let form = new FormData(event.target);
     let data = Object.fromEntries(form);
-    axios.post('/api/users/login', data).then((res) => { userContext.setUser(res.data); history.push('stocks') }, error => { console.log(error) });
+    axios.post("/api/users/login", data).then(
+      (res) => {
+        props.logIn(res.data);
+        history.push("stocks");
+      },
+      (error) => {
+        setDisable(false);
+        console.log(error);
+      }
+    );
   };
   return (
     <Wrapper>
@@ -125,13 +136,14 @@ function SignIn() {
             )}
           </Form.Group>
           <Form.Group controlId="formBasicCheckbox">
-            <Form.Check style={{fontSize: "14px"}}
+            <Form.Check
+              style={{ fontSize: "14px" }}
               type="checkbox"
               label="Agree to all policies."
               required
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={disable}>
             Sign In
           </Button>
         </Form>
@@ -140,4 +152,12 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logIn: (user) => {
+      dispatch(logIn(user));
+    }
+  };
+};
+
+export default connect(null, mapDispatchToProps)(SignIn);

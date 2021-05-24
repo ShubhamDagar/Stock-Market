@@ -1,8 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Navbar, NavLink } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
-import { UserContext } from "../App";
+import { connect } from 'react-redux';
+import { logOut } from "../redux/user/userActions";
 
 const Wrapper = styled.div`
   nav {
@@ -34,18 +35,11 @@ const Wrapper = styled.div`
   top: 0;
   z-index: 10;
 `;
-function Header() {
-  const userContext = useContext(UserContext);
-  useEffect(() => {
-    axios.get("api/users/me").then(
-      (res) => userContext.setUser(res.data),
-      (error) => console.log(error)
-    );
-  });
-  const logOut = (event) => {
+function Header(props) {
+  const logMeOut = (event) => {
     event.preventDefault();
     axios.get("api/users/logout").then(
-      (res) => userContext.setUser(null),
+      (res) => {props.logOut()},
       (error) => console.log(error)
     );
   };
@@ -58,8 +52,8 @@ function Header() {
           alt="T-System"
         />
         {/* <img width="150px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/T-SYSTEMS-LOGO2013.svg/1280px-T-SYSTEMS-LOGO2013.svg.png" /> */}
-        {userContext.user ? (
-          <NavLink onClick={logOut}>LogOut {userContext.user.name}</NavLink>
+        {props.user? (
+          <NavLink onClick={logMeOut}>LogOut {props.user.name}</NavLink>
         ) : (
           <div style={{display:"flex"}}>
             <NavLink href="/SignIn">Sign In</NavLink>
@@ -71,4 +65,18 @@ function Header() {
   );
 }
 
-export default Header;
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    user: state.user
+  }
+}
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logOut: () => {
+      dispatch(logOut());
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
