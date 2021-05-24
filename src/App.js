@@ -7,6 +7,7 @@ import WhatStock from "./components/WhatStock";
 import SignIn from "./components/SignIn";
 import Stocks from "./components/Stocks";
 import SignUp from "./components/SignUp";
+import Loading from "./components/Loading";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           </Route>
         </Switch>
       </BrowserRouter>
+      {/* <Loading/> */}
     </div>
   );
 }

@@ -199,7 +199,7 @@ function Stocks() {
                     </Row>
                   </Card.Header>
                   <Accordion.Collapse eventKey={index}>
-                    <Card.Body>Loading...</Card.Body>
+                    <Card.Body>Loading <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span></Card.Body>
                   </Accordion.Collapse>
                 </Card>
               );

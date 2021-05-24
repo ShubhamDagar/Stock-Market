@@ -64,7 +64,6 @@ function SignIn(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    setDisable(true);
     if (!event.target[0].value.match(mail)) {
       setValidateEmail((prev) => {
         return { ...prev, flag: true };
@@ -79,6 +78,7 @@ function SignIn(props) {
     }
     let form = new FormData(event.target);
     let data = Object.fromEntries(form);
+    setDisable(true);
     axios.post("/api/users/login", data).then(
       (res) => {
         props.logIn(res.data);
@@ -144,7 +144,8 @@ function SignIn(props) {
             />
           </Form.Group>
           <Button variant="primary" type="submit" disabled={disable}>
-            Sign In
+            {disable? <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> : null}
+             Sign In
           </Button>
         </Form>
       </div>
