@@ -38,7 +38,7 @@ function Stocks() {
   if (mm < 10) mm = "0" + mm;
   let yy = today.getFullYear();
   let maxDate = `${yy}-${mm}-${dd}`;
-  const [date, setDate] = useState(maxDate);
+  const [date, setDate] = useState('2021-05-21');
   const [stocks, setStocks] = useState(null);
   useEffect(() => {
     setStocks(null);
@@ -109,8 +109,8 @@ function Stocks() {
         <Form.Control
           type="date"
           name="date"
-          defaultValue={maxDate}
-          max={maxDate}
+          defaultValue='2021-05-21'
+          max='2021-05-21'
           onChange={handleChange}
           className="m-2 drop-glow"
         ></Form.Control>
