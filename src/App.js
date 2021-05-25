@@ -7,7 +7,7 @@ import WhatStock from "./components/WhatStock";
 import SignIn from "./components/SignIn";
 import Stocks from "./components/Stocks";
 import SignUp from "./components/SignUp";
-import Loading from "./components/Loading";
+import Addsell from "./components/Addsell";
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
               <SignIn />
           </Route>
           <Route exact path="/stocks">
+            <Addsell/>
             <Stocks />
           </Route>
           <Route exact path="/SignUp">
