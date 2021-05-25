@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
 import { logIn } from "../redux/user/userActions";
+import { set } from "mongoose";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -30,6 +31,8 @@ const Wrapper = styled.div`
 `;
 function SignUp(props) {
   const history = useHistory();
+  const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState(null);
   const [validateEmail, setValidateEmail] = useState({
     flag: false,
     check: false,
@@ -61,22 +64,23 @@ function SignUp(props) {
       });
   };
   const handleConfirmChange = (event) => {
-    console.log(passRef.current.value);
     if (event.target.value === passRef.current.value) {
       setConfirmPassword((prev) => {
         return {
           check: true,
           flag: false,
-        }
+        };
       });
     } else
-      setConfirmPassword(prev => {
+      setConfirmPassword((prev) => {
         return {
-          ...prev, check: false
-        }
+          ...prev,
+          check: false,
+        };
       });
   };
   const handleMail = (event) => {
+    setError(null);
     if (event.target.value.match(mail))
       setValidateEmail((prev) => {
         return { flag: false, check: true };
@@ -88,16 +92,19 @@ function SignUp(props) {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    setDisabled(true);
     if (!event.target[1].value.match(mail)) {
       setValidateEmail((prev) => {
         return { ...prev, flag: true };
       });
+      setDisabled(false);
       return;
     }
     if (!event.target[2].value.match(passw)) {
       setValidatePass((prev) => {
         return { ...prev, flag: true };
       });
+      setDisabled(false);
       return;
     }
     if (event.target[3].value !== event.target[2].value) {
@@ -105,6 +112,7 @@ function SignUp(props) {
         check: false,
         flag: true,
       });
+      setDisabled(false);
       return;
     } else
       setConfirmPassword({
@@ -115,13 +123,20 @@ function SignUp(props) {
     let data = Object.fromEntries(form);
     axios.post("/api/users/signup", data).then(
       (res) => {
-        props.logIn(res.data);
-        history.push("stocks");
+        if (res.data.user) {
+          props.logIn(res.data.user);
+          history.push("stocks");
+        }
+        else {
+          setError(res.data.message);
+        }
       },
       (error) => {
         console.log(error);
+        setError('Internal Error !');
       }
     );
+    setDisabled(false);
   };
   return (
     <Wrapper>
@@ -207,9 +222,21 @@ function SignUp(props) {
             />
           </Form.Group>
 
-          <Button variant="success" type="submit">
+          <Button variant="success" className="p-3" type="submit" disabled={disabled}>
+            {disabled ? (
+              <span
+                className="spinner-border spinner-border-sm mr-1"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : null}
             Register
           </Button>
+          {error ? (
+            <div className="d-inline-block alert alert-warning m-0 ml-5 p-2 animate__animated animate__fadeIn">
+              {error}
+            </div>
+          ) : null}
         </Form>
       </div>
     </Wrapper>

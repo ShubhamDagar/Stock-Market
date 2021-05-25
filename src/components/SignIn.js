@@ -1,10 +1,10 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
-import { logIn} from "../redux/user/userActions";
+import { logIn } from "../redux/user/userActions";
 
 const Wrapper = styled.div`
   height: 100%;
@@ -30,6 +30,10 @@ const Wrapper = styled.div`
 `;
 function SignIn(props) {
   const history = useHistory();
+  const [error, setError] = useState(null);
+  const [wrongCount, setWrongCount] = useState(1);
+  const [waitingTime, setWaitingTime] = useState(10);
+  const [showMe, setShowMe] = useState(false);
   const [disable, setDisable] = useState(false);
   const [validateEmail, setValidateEmail] = useState({
     flag: false,
@@ -43,6 +47,7 @@ function SignIn(props) {
     /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
   let passw = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,15}$/;
   const handlePass = (event) => {
+    setError(null);
     if (event.target.value.match(passw))
       setValidatePass((prev) => {
         return { flag: false, check: true };
@@ -53,6 +58,7 @@ function SignIn(props) {
       });
   };
   const handleMail = (event) => {
+    setError(null);
     if (event.target.value.match(mail))
       setValidateEmail((prev) => {
         return { flag: false, check: true };
@@ -76,17 +82,39 @@ function SignIn(props) {
       });
       return;
     }
+    setDisable(true);
     let form = new FormData(event.target);
     let data = Object.fromEntries(form);
-    setDisable(true);
     axios.post("/api/users/login", data).then(
       (res) => {
-        props.logIn(res.data);
-        history.push("stocks");
+        setDisable(false);
+        if (res.data.user) {
+          props.logIn(res.data.user);
+          history.push("stocks");
+        } else {
+          setError(res.data.message);
+          let isWrong = res.data.message.substr(0, 5);
+          if (isWrong === "Wrong")
+            setWrongCount((prev) => prev + 1);
+          if (wrongCount == 3) {
+            setDisable(true);
+            setShowMe(true);
+            let interval = setInterval(() => {
+              if(waitingTime > 0)
+                setWaitingTime((prev) => prev - 1);
+            }, 1000);
+            setTimeout(() => {
+              setDisable(false);
+              setShowMe(false);
+              clearInterval(interval);
+            }, 10000);
+          }
+        }
       },
       (error) => {
-        setDisable(false);
         console.log(error);
+        setError("Internal Error");
+        setDisable(false);
       }
     );
   };
@@ -144,9 +172,25 @@ function SignIn(props) {
             />
           </Form.Group>
           <Button variant="primary" type="submit" disabled={disable}>
-            {disable? <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true"></span> : null}
-             Sign In
+            {(disable)? (
+              <span
+                className="spinner-border spinner-border-sm mr-1"
+                role="status"
+                aria-hidden="true"
+              ></span>
+            ) : null}
+            Sign In
           </Button>
+          {(showMe)? <span className="text-danger pl-3">Wait {waitingTime}s</span>:null}
+          {error ? (
+            <div className="alert alert-warning mt-3 animate__animated animate__fadeIn">
+              {error}
+            </div>
+          ) : (
+            <div className="alert alert-success mt-3 animate__animated animate__fadeIn">
+              <strong>Note: </strong>Stay Safe !
+            </div>
+          )}
         </Form>
       </div>
     </Wrapper>
@@ -157,7 +201,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logIn: (user) => {
       dispatch(logIn(user));
-    }
+    },
   };
 };
 

@@ -25,7 +25,17 @@ const UserSchema = new Schema({
     },
     previousPurchase: {
         type: Array
+    },
+    isLocked: {
+        type: Boolean,
+        default: false
+    },
+    wrongCount: {
+        type: Number,
+        default: 0
     }
+}, {
+    timestamps: true
 });
 
 

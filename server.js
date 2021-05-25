@@ -45,18 +45,50 @@ passport.use(
     {
       usernameField: "email",
     },
-    function (email, password, done) {
-      User.findOne({ email: email }, function (err, user) {
-        if (err) {
-          console.log("Error in finding user -> passport");
-          return done(err);
+    async function (email, password, done) {
+      try {
+        let user = await User.findOne({ email: email });
+        if (!user) {
+          return done(null, false, { message: "No such user found !" });
         }
-        if (!user || user.password != password) {
-          console.log("Invalid Email/Password");
-          return done(null, false);
+        console.log(typeof user.wrongCount);
+        if (user.isLocked) {
+          let updateTime = new Date(user.updatedAt);
+          let currentTime = new Date();
+          let timeEsc = (currentTime - updateTime) / (1000 * 60);
+          let waitingTime = 60 - timeEsc;
+
+          if (timeEsc >= 60) {
+            await user.update({ isLocked: false, wrongCount: 0 });
+            await user.save();
+            user.isLocked = true;
+            user.wrongCount = 0;
+          } else {
+            return done(null, false, {
+              message: `User locked, wait ${Math.trunc(waitingTime)} mins ${Math.trunc((waitingTime - Math.trunc(waitingTime))*60)} s`,
+            });
+          }
         }
+        if (user.password != password) {
+          if (user.wrongCount === 5) {
+            await user.update({
+              wrongCount: user.wrongCount + 1,
+              isLocked: true,
+            });
+            await user.save();
+            return done(null, false, { message: "User Locked for 1 Hr !" });
+          } else {
+            await user.update({ wrongCount: user.wrongCount + 1 });
+            await user.save();
+            return done(null, false, { message: `Wrong password, ${6-user.wrongCount-1} try remaining !` });
+          }
+        }
+        await user.update({ isLocked: false, wrongCount: 0 });
+        await user.save();
         return done(null, user);
-      });
+      } catch (error) {
+        console.log(error);
+      }
     }
   )
 );
@@ -74,10 +106,14 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-// app.use((req, res, next) => {
-//     // console.log("server:", req.session)
-//     next();
-// })
+app.use((req, res, next) => {
+  let today = new Date("05/25/2021").getTime();
+
+  let rn = new Date();
+  // console.log(rn.get);
+  // console.log((rn - today) / (1000 * 60 * 60));
+  next();
+});
 
 app.use("/api/users", userRoutes);
 const PORT = process.env.PORT || 5000;

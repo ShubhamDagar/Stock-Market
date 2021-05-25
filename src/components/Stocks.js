@@ -78,7 +78,6 @@ function Stocks() {
       );
   }, [date]);
   useEffect(() => {
-    console.log("call");
     setFullLoading(false);
   }, []);
   const handleChange = (event) => {
@@ -101,9 +100,9 @@ function Stocks() {
           collapseDiv.innerHTML = "";
           var div = document.createElement("div");
           div.innerHTML = `
-          <div class='row'>
-          <img class='col-2' src='${res.data.logo}' alt="LOGO"/>
-          <span class='col align-self-end'><h3>${res.data.name}</h4></span>
+          <div className='row'>
+          <img className='col-2' src='${res.data.logo}' alt="LOGO"/>
+          <span className='col align-self-end'><h3>${res.data.name}</h4></span>
           </div>
           <br></br>
           <b>CEO:</b> ${res.data.ceo}
@@ -230,7 +229,7 @@ function Stocks() {
                       <Card.Body>
                         Loading{" "}
                         <span
-                          class="spinner-border spinner-border-sm"
+                          className="spinner-border spinner-border-sm"
                           role="status"
                           aria-hidden="true"
                         ></span>
