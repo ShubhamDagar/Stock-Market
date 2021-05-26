@@ -29,7 +29,7 @@ function SingleStock(props) {
       }
     );
   }, []);
-  const handlePurchase = () => {
+  const handlePurchase = (event) => {
     if (inputRef.current.value > stock.quantity) return;
     axios
       .post("/api/stocks/buy-stocks", {
@@ -38,6 +38,8 @@ function SingleStock(props) {
       })
       .then((res) => {
         if (!res.data.error) {
+          localStorage.setItem('stockUser', JSON.stringify(res.data.user));
+          event.target.innerHTML = 'Buy More'
           setStock((prev) => {
             return {
               ...prev,

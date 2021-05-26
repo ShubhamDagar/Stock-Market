@@ -31,7 +31,12 @@ const Wrapper = styled.div`
 function MyProfile(props) {
   const [currentHoldings, setCurrentHoldings] = useState(null);
   const [oldHoldings, setOldHoldings] = useState(null);
+  const [timeValid, setTimeValid] = useState(true);
+  
   useEffect(() => {
+    let pm5 = new Date();
+    pm5.setHours(19, 0, 0);
+    if (pm5 - new Date() <= 0) setTimeValid(false);
     console.log(props.user.currentHoldings);
     axios
       .post("api/stocks/myholdings", { ids: props.user.currentHoldings })
@@ -57,7 +62,8 @@ function MyProfile(props) {
     axios.post("/api/stocks/sell-stocks", { id: id }).then(
       (res) => {
         if (!res.data.error) {
-          event.target.innerHTML = 'SOLD, REFRESH PAGE'
+          event.target.innerHTML = "SOLD, Refresh Page"
+          localStorage.setItem('stockUser', JSON.stringify(res.data.user));
         }
       },
       (err) => {
@@ -114,9 +120,9 @@ function MyProfile(props) {
                       {holding.quantity}
                     </Col>
                     <Col xs={2} className="col-me text-info">
-                      <Button data-id={holding._id} onClick={handleSell}>
+                      {timeValid? <Button data-id={holding._id} onClick={handleSell}>
                         SELL
-                      </Button>
+                      </Button>: null}
                     </Col>
                   </Row>
                 </Card.Header>

@@ -6,14 +6,16 @@ const controllers = {
   randomStocks: async () => {
     try {
       let stocks = await Stock.find({});
+      // console.log(stocks);
       for (let i = 0; i < stocks.length; i++) {
         let currVal = stocks[i].current;
-        let newVal = currVal + (50 - 100 * Math.random()).toFixed(2);
-        await stocks[i].update({
+        let newVal = currVal + (50 - (100 * Math.random())).toFixed(2);
+        let st = await Stock.findById(stocks[i]._id);
+        await st.update({
           prev: currVal,
-          currVal: newVal,
+          current: newVal
         });
-        await stocks[i].save();
+        await st.save();
       }
     } catch (error) {
       console.log(error, " In randomizing !");
@@ -57,7 +59,8 @@ const controllers = {
       user = await User.findById(req.user.id);
       await user.update({ money: user.money - stockQuanity * stock.current });
       await user.save();
-      return res.json({ error: null });
+      const newUser = await User.findById(req.user.id);
+      return res.json({ error: null , user : newUser});
     } catch (error) {
       console.log(error, " Error in buying Stock !");
     }
@@ -94,7 +97,8 @@ const controllers = {
       });
       await user.save();
       console.log(7);
-      return res.json({ error: null });
+      const newUser = await User.findById(req.user.id);
+      return res.json({ error: null , user : newUser});
     } catch (error) {
       console.log(error, " Error in selling Stock !");
     }

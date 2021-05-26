@@ -14,7 +14,7 @@ import stockController from './controllers/stockController'
 
 //connect database
 connectDB();
-stocksRandom();
+// stockController.randomStocks();
 // stockController.putDummyStocks();
 
 const app = express();

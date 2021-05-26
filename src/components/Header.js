@@ -40,8 +40,9 @@ function Header(props) {
   // const history = useHistory();
   // useEffect(() => {
   //   if (!props.user)
-  //     history.push('signin');
-  // }, []);
+  //     if(history)
+  //       history.push('signin');
+  // }, [history]);
   const logMeOut = (event) => {
     event.preventDefault();
     axios.get("api/users/logout").then(
