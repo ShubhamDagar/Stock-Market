@@ -37,7 +37,7 @@ const Wrapper = styled.div`
   z-index: 10;
 `;
 function Header(props) {
-  // const history = useHistory();
+  const history = useHistory();
   // useEffect(() => {
   //   if (!props.user)
   //     if(history)
@@ -48,6 +48,7 @@ function Header(props) {
     axios.get("api/users/logout").then(
       (res) => {
         props.logOut();
+        history.push("signin");
       },
       (error) => console.log(error)
     );
