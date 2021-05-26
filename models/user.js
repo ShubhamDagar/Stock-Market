@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
-import  passportLocalMongoose from 'passport-local-mongoose';
 
 const UserSchema = new Schema({
     name: {
@@ -20,12 +19,18 @@ const UserSchema = new Schema({
     portfolioValue: {
         type: Number
     },
-    currentHoldings: {
-        type: Array
-    },
-    previousPurchase: {
-        type: Array
-    },
+    currentHoldings: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref : 'Holding'
+        }
+    ],
+    previousPurchase: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref : 'Holding'
+        }
+    ],
     isLocked: {
         type: Boolean,
         default: false
@@ -33,6 +38,11 @@ const UserSchema = new Schema({
     wrongCount: {
         type: Number,
         default: 0
+    },
+    money: {
+        type: Number,
+        default: 100000,
+        required: true
     }
 }, {
     timestamps: true

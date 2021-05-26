@@ -9,6 +9,8 @@ import Stocks from "./components/Stocks";
 import SignUp from "./components/SignUp";
 import Loading from "./components/Loading";
 import Addsell from "./components/Addsell";
+import SingleStock from "./components/SingleStock";
+import MyProfile from "./components/MyProfile";
 
 function App() {
   return (
@@ -31,6 +33,11 @@ function App() {
           </Route>
           <Route exact path="/Buy-Stocks">
             <Addsell/>
+          </Route>
+          <Route exact path="/stock/:id" component={SingleStock}>
+          </Route>
+          <Route exact path="/myprofile">
+            <MyProfile/>
           </Route>
           <Route exact path="/SignUp">
               <SignUp />

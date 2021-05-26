@@ -8,9 +8,14 @@ import flash from "connect-flash";
 import bodyParser from "body-parser";
 import connectDB from "./config/mongo";
 import mongoDbStore from "connect-mongo";
+import stocksRandom from './config/stocksRandom';
+import routes from './routes/index';
+import stockController from './controllers/stockController'
 
 //connect database
 connectDB();
+stocksRandom();
+// stockController.putDummyStocks();
 
 const app = express();
 const sessionConfig = {
@@ -65,7 +70,11 @@ passport.use(
             user.wrongCount = 0;
           } else {
             return done(null, false, {
-              message: `User locked, wait ${Math.trunc(waitingTime)} mins ${Math.trunc((waitingTime - Math.trunc(waitingTime))*60)} s`,
+              message: `User locked, wait ${Math.trunc(
+                waitingTime
+              )} mins ${Math.trunc(
+                (waitingTime - Math.trunc(waitingTime)) * 60
+              )} s`,
             });
           }
         }
@@ -80,7 +89,11 @@ passport.use(
           } else {
             await user.update({ wrongCount: user.wrongCount + 1 });
             await user.save();
-            return done(null, false, { message: `Wrong password, ${6-user.wrongCount-1} try remaining !` });
+            return done(null, false, {
+              message: `Wrong password, ${
+                6 - user.wrongCount - 1
+              } try remaining !`,
+            });
           }
         }
         await user.update({ isLocked: false, wrongCount: 0 });
@@ -106,16 +119,41 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
+
+
+
+
 app.use((req, res, next) => {
   let today = new Date("05/25/2021").getTime();
 
-  let rn = new Date();
+  // let rn = new Date();
+  // let pm5 = new Date();
+  // pm5.setHours(17, 0, 0, 0);
+  // let timeRemaining = pm5 - new Date();
+  // console.log(timeRemaining);
+  // if (timeRemaining < 0)
+  //   timeRemaining = (24 * 60 * 60 * 1000) + timeRemaining;
+  // pm5 = timeRemaining / (1000 * 60 * 60);
+  // let min = Math.trunc((pm5 - Math.trunc(pm5)) * 60);
+  // let secs = Math.trunc(
+  //   ((pm5 - Math.trunc(pm5)) * 60 - Math.trunc((pm5 - Math.trunc(pm5)) * 60)) *
+  //     60
+  // );
+  // console.log(
+  //   "Time remaining: ",
+  //   Math.trunc(pm5),
+  //   "hr",
+  //   `${min}`,
+  //   "mins",
+  //   `${secs}`,
+  //   "s"
+  // );
   // console.log(rn.get);
   // console.log((rn - today) / (1000 * 60 * 60));
   next();
 });
 
-app.use("/api/users", userRoutes);
+app.use("/api", routes);
 const PORT = process.env.PORT || 5000;
 
 //Express js listen method to run project on http://localhost:5000
