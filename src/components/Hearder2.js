@@ -36,18 +36,11 @@ const Wrapper = styled.div`
   top: 0;
   z-index: 10;
 `;
-function Header(props) {
-  const history = useHistory();
-  useEffect(() => {
-    if (!props.user)
-      if(history)
-        history.push('signin');
-  }, [history]);
+function Header2(props) {
   const logMeOut = (event) => {
     event.preventDefault();
     axios.get("api/users/logout").then(
       (res) => {
-        history.push("signin");
         props.logOut();
       },
       (error) => console.log(error)
@@ -91,4 +84,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(mapStateToProps, mapDispatchToProps)(Header2);

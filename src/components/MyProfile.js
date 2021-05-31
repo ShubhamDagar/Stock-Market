@@ -35,7 +35,7 @@ function MyProfile(props) {
   
   useEffect(() => {
     let pm5 = new Date();
-    pm5.setHours(19, 0, 0);
+    pm5.setHours(20, 0, 0);
     if (pm5 - new Date() <= 0) setTimeValid(false);
     console.log(props.user.currentHoldings);
     axios
@@ -94,6 +94,9 @@ function MyProfile(props) {
               Purchase Price
             </Col>
             <Col xs={2} className="col-me">
+              Current Price
+            </Col>
+            <Col xs={2} className="col-me">
               Quantity
             </Col>
             <Col xs={2} className="col-me"></Col>
@@ -115,6 +118,9 @@ function MyProfile(props) {
                     </Accordion.Toggle>
                     <Col xs={2} className="col-me text-info">
                       {holding.purchasedAt}
+                    </Col>
+                    <Col xs={2} className="col-me text-info">
+                      {holding.stock.current}
                     </Col>
                     <Col xs={2} className="col-me text-info">
                       {holding.quantity}
