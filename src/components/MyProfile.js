@@ -37,12 +37,10 @@ function MyProfile(props) {
     let pm5 = new Date();
     pm5.setHours(20, 0, 0);
     if (pm5 - new Date() <= 0) setTimeValid(false);
-    console.log(props.user.currentHoldings);
     axios
       .post("api/stocks/myholdings", { ids: props.user.currentHoldings })
       .then(
         (res) => {
-          console.log(res.data);
           setCurrentHoldings(res.data);
         },
         (err) => console.log(err)
@@ -176,49 +174,11 @@ function MyProfile(props) {
                     <Col xs={2} className="col-me text-info">
                       {holding.purchasedAt}
                     </Col>
-                    {/* <Col xs={2} className="col-me">
-                          <Row>
-                            <Col
-                              className="p-0 text-secondary"
-                              xs={6}
-                              style={{ textAlign: "right" }}
-                            >
-                              {holding.current}
-                            </Col>
-                            <Col
-                              className={
-                                stock.current > stock.prev
-                                  ? "p-0 pl-2 text-success"
-                                  : "p-0 pl-2 text-danger"
-                              }
-                              style={{
-                                fontSize: "12px",
-                                lineHeight: "2",
-                                textAlign: "left",
-                              }}
-                            >
-                              <FontAwesomeIcon
-                                icon={
-                                  stock.current > stock.prev
-                                    ? faSortUp
-                                    : faSortDown
-                                }
-                                className={
-                                  stock.current > stock.prev
-                                    ? "text-success"
-                                    : "text-danger"
-                                }
-                                style={{ fontSize: "15px", height: "15px" }}
-                              ></FontAwesomeIcon>
-                              {Math.abs(stock.current - stock.prev).toFixed(2)}
-                            </Col>
-                          </Row>
-                        </Col> */}
                     <Col xs={2} className="col-me text-info">
                       {holding.soldedAt}
                     </Col>
                     <Col xs={2} className="col-me text-info">
-                      Rs. {(holding.soldedAt - holding.purchasedAt)*holding.quantity}
+                      Rs. {((holding.soldedAt - holding.purchasedAt)*holding.quantity).toFixed(2)}
                     </Col>
                   </Row>
                 </Card.Header>

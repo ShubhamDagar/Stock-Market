@@ -15,14 +15,13 @@ function SingleStock(props) {
   const [timeValid, setTimeValid] = useState(true);
   useEffect(() => {
     let pm5 = new Date();
-    pm5.setHours(19, 0, 0);
+    pm5.setHours(20, 0, 0);
     if (pm5 - new Date() <= 0) setTimeValid(false);
     const {
       match: { params },
     } = props;
     axios.get(`/api/stocks/${params.id}`).then(
       (res) => {
-        console.log(res.data);
         setStock(res.data);
       },
       (err) => {

@@ -6,10 +6,9 @@ const controllers = {
   randomStocks: async () => {
     try {
       let stocks = await Stock.find({});
-      // console.log(stocks);
       for (let i = 0; i < stocks.length; i++) {
         let currVal = stocks[i].current;
-        let newVal = currVal + (50 - (100 * Math.random())).toFixed(2);
+        let newVal = (currVal + parseFloat((4 - (10 * Math.random())).toFixed(2))).toFixed(2);
         let st = await Stock.findById(stocks[i]._id);
         await st.update({
           prev: currVal,
@@ -32,7 +31,6 @@ const controllers = {
   getSingleStock: async (req, res) => {
     try {
       let stock = await Stock.findById(req.params.id);
-      console.log(stock.name);
       return res.json(stock);
     } catch (error) {
       console.log(error, " Error in fetching single Stock !");
@@ -40,7 +38,6 @@ const controllers = {
   },
   buyStock: async (req, res) => {
     try {
-      console.log(req.body);
       let stockID = req.body.id;
       let stockQuanity = req.body.quantity;
       let stock = await Stock.findById(stockID);
@@ -67,36 +64,26 @@ const controllers = {
   },
   sellStock: async (req, res) => {
     try {
-      console.log(req.user.id);
       let holding = await Holding.findById(req.body.id);
       if (holding.user != req.user.id) return;
-      console.log(5346345)
       let stock = await Stock.findById(holding.stock);
-      console.log(5346345)
       let user = await User.findById(req.user.id);
-      console.log(1);
       await holding.update({ soldedAt: stock.current });
       await holding.save();
-      console.log(2);
       holding.soledAt = stock.current;
       await stock.update({ quantity: stock.quantity + holding.quantity });
       await stock.save();
-      console.log(3);
       await user.update({
         $pull: { currentHoldings: req.body.id },
       });
       await user.save();
-      console.log(4);
       await user.previousPurchase.push(holding);
       await user.save();
-      console.log(5);
       // user = await User.findById(req.user.id);
-      console.log(6);
       await user.update({
         money: user.money + holding.quantity * stock.current,
       });
       await user.save();
-      console.log(7);
       const newUser = await User.findById(req.user.id);
       return res.json({ error: null , user : newUser});
     } catch (error) {

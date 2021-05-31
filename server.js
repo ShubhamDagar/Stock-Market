@@ -14,7 +14,7 @@ import stockController from './controllers/stockController'
 
 //connect database
 connectDB();
-// stockController.randomStocks();
+stockController.randomStocks();
 // stockController.putDummyStocks();
 
 const app = express();
@@ -56,7 +56,6 @@ passport.use(
         if (!user) {
           return done(null, false, { message: "No such user found !" });
         }
-        console.log(typeof user.wrongCount);
         if (user.isLocked) {
           let updateTime = new Date(user.updatedAt);
           let currentTime = new Date();
@@ -119,39 +118,12 @@ passport.deserializeUser(function (id, done) {
   });
 });
 
-
-
-
-
-app.use((req, res, next) => {
-  let today = new Date("05/25/2021").getTime();
-
-  // let rn = new Date();
-  // let pm5 = new Date();
-  // pm5.setHours(17, 0, 0, 0);
-  // let timeRemaining = pm5 - new Date();
-  // console.log(timeRemaining);
-  // if (timeRemaining < 0)
-  //   timeRemaining = (24 * 60 * 60 * 1000) + timeRemaining;
-  // pm5 = timeRemaining / (1000 * 60 * 60);
-  // let min = Math.trunc((pm5 - Math.trunc(pm5)) * 60);
-  // let secs = Math.trunc(
-  //   ((pm5 - Math.trunc(pm5)) * 60 - Math.trunc((pm5 - Math.trunc(pm5)) * 60)) *
-  //     60
-  // );
-  // console.log(
-  //   "Time remaining: ",
-  //   Math.trunc(pm5),
-  //   "hr",
-  //   `${min}`,
-  //   "mins",
-  //   `${secs}`,
-  //   "s"
-  // );
-  // console.log(rn.get);
-  // console.log((rn - today) / (1000 * 60 * 60));
-  next();
-});
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
+console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
 
 app.use("/api", routes);
 const PORT = process.env.PORT || 5000;
