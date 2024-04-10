@@ -16,7 +16,7 @@ import {
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
-import Loading from "./Loading";
+import Loading from "./Loading.js";
 
 const Wrapper = styled.div`
   #stocks {
@@ -45,13 +45,13 @@ const Wrapper = styled.div`
 
 function Stocks() {
   let today = new Date();
-  let dd = today.getDate() - 3;
+  let dd = today.getDate() - 1;
   if (dd < 10) dd = "0" + dd;
   let mm = today.getMonth() + 1;
   if (mm < 10) mm = "0" + mm;
   let yy = today.getFullYear();
   let maxDate = `${yy}-${mm}-${dd}`;
-  const [date, setDate] = useState("2021-05-21");
+  const [date, setDate] = useState(maxDate);
   const [stocks, setStocks] = useState(null);
   const [loading, setLoading] = useState(false);
   const [fullLoading, setFullLoading] = useState(false);
@@ -133,7 +133,7 @@ function Stocks() {
               type="date"
               name="date"
               defaultValue="2021-05-21"
-              max="2021-05-21"
+              max={maxDate}
               onChange={handleChange}
               className="drop-glow"
             ></Form.Control>

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { logOut } from "../redux/user/userActions";
+import { logOut } from "../redux/user/userActions.js";
 
 const Wrapper = styled.div`
   nav {
@@ -50,8 +50,8 @@ function Header2(props) {
     <Wrapper>
       <Navbar>
         <img
-          width="150px"
-          src="https://nexus.t-systems.es/download/resources/es.tsystems.tao.customerportal:resources/images/brand-logo/TSY_Logo_W.png"
+          width="80px"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/T-Mobile_logo_2022.svg/2048px-T-Mobile_logo_2022.svg.png"
           alt="T-System"
         />
         {/* <img width="150px" src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/T-SYSTEMS-LOGO2013.svg/1280px-T-SYSTEMS-LOGO2013.svg.png" /> */}

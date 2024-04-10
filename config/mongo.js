@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const connectDB = async () => {
     try {
-        const con = await mongoose.connect('mongodb+srv://jaivin:dtdljaivin@stockswebapp.qqmth.mongodb.net/stocksdb?retryWrites=true&w=majority', { 
+        const con = await mongoose.connect('mongodb+srv://ShubhamDagar:dmWiT5Puij7pYGvZ@shieldstocks.9yhlkio.mongodb.net/?retryWrites=true&w=majority&appName=ShieldStocks', { 
         useNewUrlParser: true,
         useUnifiedTopology: true,
         useCreateIndex: true

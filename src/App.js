@@ -1,17 +1,17 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Route, Switch, BrowserRouter } from "react-router-dom";
-import Header from "./components/Header";
+import Header from "./components/Header.js";
 import React from "react";
-import WhatStock from "./components/WhatStock";
-import SignIn from "./components/SignIn";
-import Stocks from "./components/Stocks";
-import SignUp from "./components/SignUp";
-import Loading from "./components/Loading";
-import Addsell from "./components/Addsell";
-import SingleStock from "./components/SingleStock";
-import MyProfile from "./components/MyProfile";
-import Hearder2 from "./components/Hearder2";
+import WhatStock from "./components/WhatStock.js";
+import SignIn from "./components/SignIn.js";
+import Stocks from "./components/Stocks.js";
+import SignUp from "./components/SignUp.js";
+import Loading from "./components/Loading.js";
+import Addsell from "./components/Addsell.js";
+import SingleStock from "./components/SingleStock.js";
+import MyProfile from "./components/MyProfile.js";
+import Hearder2 from "./components/Hearder2.js";
 
 function App() {
   return (

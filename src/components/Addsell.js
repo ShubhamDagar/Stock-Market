@@ -45,16 +45,18 @@ const Wrapper = styled.div`
 
 function Addsell() {
   const [stocks, setStocks] = useState(null);
+  const [check, setCheck] = useState(false);
   useEffect(() => {
     axios.get("/api/stocks").then(
       (res) => {
-        setStocks(res.data);
+        // if(toString(stocks) !== toString(res.data) && stocks != null) 
+          setStocks(res.data);
       },
       (err) => {
         console.log(err);
       }
     );
-  });
+  }, [check]);
   return (
     <Wrapper>
       <br />

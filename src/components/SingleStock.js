@@ -5,9 +5,9 @@ import { useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSortDown, faSortUp } from "@fortawesome/free-solid-svg-icons";
 import { Button, Form } from "react-bootstrap";
-import Loading from "./Loading";
+import Loading from "./Loading.js";
 import { useRef } from "react";
-import Header from "./Header";
+import Header from "./Header.js";
 
 function SingleStock(props) {
   const inputRef = useRef();

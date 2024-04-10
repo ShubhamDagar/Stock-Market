@@ -4,7 +4,7 @@ import { Form, Button } from "react-bootstrap";
 import styled from "styled-components";
 import axios from "axios";
 import { connect } from "react-redux";
-import { logIn } from "../redux/user/userActions";
+import { logIn } from "../redux/user/userActions.js";
 import { set } from "mongoose";
 
 const Wrapper = styled.div`

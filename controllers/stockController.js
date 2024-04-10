@@ -1,6 +1,6 @@
-import Holding from "../models/holding";
-import Stock from "../models/stock";
-import User from "../models/user";
+import Holding from "../models/holding.js";
+import Stock from "../models/stock.js";
+import User from "../models/user.js";
 
 const controllers = {
   randomStocks: async () => {

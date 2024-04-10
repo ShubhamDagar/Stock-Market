@@ -1,4 +1,4 @@
-import stockController from '../controllers/stockController';
+import stockController from '../controllers/stockController.js';
 const stocksRandom = () => {
   let rn = new Date();
   let pm5 = new Date();

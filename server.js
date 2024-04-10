@@ -2,15 +2,15 @@ import userRoutes from "./routes/userRoute.js";
 import express from "express";
 import passport from "passport";
 import LocalStrategy from "passport-local";
-import User from "./models/user";
+import User from "./models/user.js";
 import session from "express-session";
 import flash from "connect-flash";
 import bodyParser from "body-parser";
-import connectDB from "./config/mongo";
+import connectDB from "./config/mongo.js";
 import mongoDbStore from "connect-mongo";
-import stocksRandom from './config/stocksRandom';
-import routes from './routes/index';
-import stockController from './controllers/stockController'
+import stocksRandom from './config/stocksRandom.js';
+import routes from './routes/index.js';
+import stockController from './controllers/stockController.js'
 
 //connect database
 connectDB();
@@ -30,7 +30,7 @@ const sessionConfig = {
   store: mongoDbStore.create(
     {
       mongoUrl:
-        "mongodb+srv://jaivin:dtdljaivin@stockswebapp.qqmth.mongodb.net/stocksdb?retryWrites=true&w=majority",
+        "mongodb+srv://ShubhamDagar:dmWiT5Puij7pYGvZ@shieldstocks.9yhlkio.mongodb.net/?retryWrites=true&w=majority&appName=ShieldStocks",
       autoRemove: "disabled",
     },
     function (err) {
@@ -126,7 +126,7 @@ console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!'
 console.log('NOTE: STOCKS ARE RANDOMIZED EVERY TIME SERVER STARTS OR RESTARTS!!')
 
 app.use("/api", routes);
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 //Express js listen method to run project on http://localhost:5000
 app.listen(PORT, console.log(`App is running on port ${PORT}`));

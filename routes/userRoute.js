@@ -1,8 +1,8 @@
 import { getUsers, getUserById } from "../controllers/userController.js";
 import express from "express";
 import passport from "passport";
-import User from "../models/user";
-import catchAsync from "../config/catchAsync";
+import User from "../models/user.js";
+import catchAsync from "../config/catchAsync.js";
 const router = express.Router();
 
 // express router method to create route for getting all users

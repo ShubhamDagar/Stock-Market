@@ -1,6 +1,6 @@
 import express from 'express'
 const router = express.Router();
-import stockController from '../controllers/stockController'
+import stockController from '../controllers/stockController.js'
 
 router.get('/', stockController.getAllStocks);
 router.post('/buy-stocks', stockController.buyStock);
